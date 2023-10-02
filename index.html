@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de IMC</title>
+    <style>
+        body{
+            background-color: burlywood;
+        }
+        input, button{
+            background-color: cornsilk;
+        }
+        .container, .buttons, .inputs, #secaoTabela, h1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 3px;
+        }
+        p{
+            justify-content: center;
+            margin: 5px;
+            text-align: center;
+        }
+        button{
+            margin: 5px;
+        }
+        table, tr, td{
+            border: 1px solid black;
+            width: max-content;
+        }
+        tr, td{
+            width: 75px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de IMC</h1><br>
+    <div class="container">
+
+        <form action="">
+            
+            <div class="inputs"><label for="nome">Digite seu nome</label><br></div>
+            <div class="inputs"><input type="text" id="Nome"><br></div>
+            <div class="inputs"><label for="Peso">Digite seu peso (kg)</label><br></div>
+            <div class="inputs"><input type="number" id="Peso"><br></div>
+            <div class="inputs"><label for="Altura">Digite sua altura (cm)</label><br></div>
+            <div class="inputs"><input type="number" id="Altura"><br></div>
+            
+            <!--<input type="radio" name="sexo" value="masc" id="sexo">
+            <label for="opcao">Masculino</label>
+            <input type="radio" name="sexo" value="fem" id="sexo">
+            <label for="opcao">Feminino</label><br>-->
+            <div class="buttons"><button type="button" onclick="calcularIMC()">Calcular IMC</button></div>
+            <div id="secaoTabela"></div>
+            <div class="buttons"><button type="button" class="buttons" id="media" style="display: none;" onclick="calcularMedia()">Calcular média</button></div>
+            <p id="mostrarMedia" style="display: none;"></p>
+            <div class="buttons"><button type="button" id="mediana" style="display: none;" onclick="calcularMediana()">Calcular mediana</button></div>
+            <p id="mostrarMediana" style="display: none;"></p>
+            <div class="buttons"><button type="button" id="varia" style="display: none;" onclick="variancia()">Calcular variância</button></div>
+            <p id="variancia" style="display: none;"></p>
+        
+        </form>
+    </div>
+    <script>
+        var i = 0
+        var imcs = Array()
+        function calcularIMC(){
+            document.getElementById("media").style.display = "block"
+            document.getElementById("mediana").style.display = "block"
+            document.getElementById("varia").style.display = "block"
+            var inputElement = document.getElementById("Nome")
+            var peso = document.getElementById("Peso")
+            var altura = document.getElementById("Altura")
+            var imc = document.getElementById("IMC")
+            
+            /*var sexo = document.getElementsByName("sexo")
+            var sexoSelecionado
+
+            for (let i = 0; i < sexo.length; i++) {
+                if (sexo[i].checked) {
+                    sexoSelecionado = sexo[i].value
+                    break
+                }
+            }*/
+
+            var valor1 = parseInt(peso.value)
+            var valor2 = parseInt(altura.value)
+            var nome = inputElement.value
+
+            /*console.log(valor1);
+            console.log(valor2);
+            console.log(sexoSelecionado);*/
+
+            var alturaM = valor2/100
+            var indice = valor1 /(alturaM*alturaM)
+            var resultado = indice.toFixed(2)
+
+            imcs[i] = parseFloat(resultado)
+
+            /*var tabela = document.createElement("table")
+            var cabeca = document.createElement("thead")
+            var corpo = document.createElement("tbody")
+            var linha_titulo1 = document.createElement("th")
+            var linha_titulo2 = document.createElement("th")
+            var secaoTabela = document.querySelector("#secaoTabela")
+            secaoTabela.appendChild(tabela)
+            tabela.appendChild(cabeca)
+            cabeca.appendChild(linha_titulo1)
+            cabeca.appendChild(linha_titulo2)*/
+            
+            
+            /*if (i==0) {
+                var tabela = document.createElement("table")
+            var cabeca = document.createElement("thead")
+            var corpo = document.createElement("tbody")
+            var linha_titulo1 = document.createElement("th")
+            var linha_titulo2 = document.createElement("th")
+            var secaoTabela = document.querySelector("#secaoTabela")
+            secaoTabela.appendChild(tabela)
+            tabela.appendChild(cabeca)
+            cabeca.appendChild(linha_titulo1)
+            cabeca.appendChild(linha_titulo2)
+                linha_titulo1.innerText = "Nome"
+                linha_titulo2.innerText = "IMC"
+            }*/
+
+            var tabela = document.querySelector("table");
+            var cabeca = document.querySelector("thead");
+            var corpo = document.querySelector("tbody");
+            var linha_titulo1 = document.querySelector("th:nth-child(1)");
+            var linha_titulo2 = document.querySelector("th:nth-child(2)");
+
+            if (!tabela) {
+                tabela = document.createElement("table");
+                var cabeca = document.createElement("thead");
+                var corpo = document.createElement("tbody");
+                var linha_titulo1 = document.createElement("th");
+                var linha_titulo2 = document.createElement("th");
+                linha_titulo1.innerText = "Nome";
+                linha_titulo2.innerText = "IMC";
+                secaoTabela.appendChild(tabela);
+                tabela.appendChild(cabeca);
+                cabeca.appendChild(linha_titulo1);
+                cabeca.appendChild(linha_titulo2);
+            }
+                        
+            let linha = document.createElement("tr")
+            let celulaNome = document.createElement("td")
+            celulaNome.innerHTML = nome
+            let celulaIMC = document.createElement("td")
+            celulaIMC.innerHTML = resultado
+
+           if (resultado<18&&resultado>16||resultado>25&&resultado<27)
+                    linha.style.backgroundColor = "rgb(234, 236, 112)"
+            if (resultado<16||resultado>27)
+                linha.style.backgroundColor = "rgb(236, 112, 112)"
+            linha.appendChild(celulaNome)
+            linha.appendChild(celulaIMC)
+            corpo.appendChild(linha)
+            tabela.appendChild(corpo)
+            i++
+        }
+        function calcularMedia(){
+            document.getElementById("mostrarMedia").style.display = "block"
+            var show = document.getElementById("mostrarMedia")
+            var media 
+            var soma = 0
+
+            for (let index = 0; index < imcs.length; index++) {
+                val = imcs[index]
+                soma += val
+            }
+            media = soma/i
+
+            media = media.toFixed(2)
+            
+            show.textContent = "A média é " + media
+        }
+        function calcularMediana(){
+            document.getElementById("mostrarMediana").style.display = "block"
+            if(i%2!=0){
+                var meio = Math.ceil(i/2)
+                var mediana = imcs[meio-1]}
+            else{
+                var meio1 = i/2
+                console.log("Entrou");
+                var meio2 = meio1 + 1
+                var mediana = (imcs[meio1-1] + imcs[meio2-1])/2   
+            }
+                
+            var mostrarMediana = document.getElementById("mostrarMediana")
+            console.log(mediana);
+            mediana = mediana.toFixed(2)
+            mostrarMediana.textContent = "A mediana é " + mediana
+        }
+        function variancia(){
+            document.getElementById("variancia").style.display = "block"
+            mostrar = document.getElementById("variancia")
+            vetor = Array()
+            var media 
+            var soma = 0
+
+            for (let index = 0; index < imcs.length; index++) {
+                val = imcs[index]
+                soma += val
+            }
+            media = soma/i
+            
+            for (let index = 0; index < i; index++) {
+                vetor[index] = (imcs[index] - media) * (imcs[index] - media)
+            }
+            var mediavaria 
+            var somavaria = 0
+
+            for (let index = 0; index < imcs.length; index++) {
+                valvaria = vetor[index]
+                somavaria += valvaria
+            }
+            mediavaria = somavaria/i
+            mediavaria = mediavaria.toFixed(2)
+            mostrar.textContent = "A variância é " + mediavaria
+        }
+    </script>
+</body>
+</html>
